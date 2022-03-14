@@ -10,10 +10,8 @@ class Ninja:
         self.age = data['age']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-
-        #Porque actualizamos la tabla y la vinculamos a classrooms
         self.dojo_id = data['dojo_id']
-        #VINCULACION
+    
         dojo = Dojo.get_dojo_by_id({"id": data['dojo_id']})
         self.dojo = dojo
     
@@ -27,22 +25,18 @@ class Ninja:
 
         #VINCULANDO NINJAS CON DOJOS
         for n in results:
-            #Lo obligo a que sea instancia de ninjas, ahora tenemos un ninj relleno en todos los campos, pero con un self.dojo= None
             ninj = cls(n)
             data = {
                 "id": ninj.dojo_id
             }
             returnedDojo = Dojo.get_dojo_by_id(data)
             ninj.dojo = returnedDojo
-            #Ya esta listo y se inserta a la lista
             ninjas.append(cls(n))
         return ninjas
 
     #CREATE
     @classmethod
     def guardar(cls, formulario):
-        #data = {"first_name": "C", "last_name": "X", "email": "c@cd.com"}
-        #Porque actualizamos la tabla y la vinculamos a classrooms
         query = "INSERT INTO ninjas (first_name, last_name, age, dojo_id) VALUES (%(first_name)s, %(last_name)s, %(age)s, %(dojo_id)s)"
         result = connectToMySQL('dojos_y_ninjas').query_db(query, formulario)
         return result
@@ -55,14 +49,12 @@ class Ninja:
         ninjas =[]
         print(results)
         for n in results:
-            #Lo obligo a que sea instancia de ninjas, ahora tenemos un ninj relleno en todos los campos, pero con un self.dojo= None
             ninj = cls(n)
             data = {
                 "id": ninj.dojo_id
             }
             returnedDojo = Dojo.get_dojo_by_id(data)
             ninj.dojo = returnedDojo
-            #Ya esta listo y se inserta a la lista
             ninjas.append(cls(n))
         
         return ninjas
